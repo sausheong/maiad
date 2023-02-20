@@ -5,7 +5,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Printf("Failed to load the env vars: %v", err)
+	}
+}
 
 func main() {
 
@@ -17,7 +26,7 @@ func server() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/g", generate)
 	server := &http.Server{
-		Addr:    addr,
+		Addr:    ":" + addr,
 		Handler: mux,
 	}
 	server.ListenAndServe()
