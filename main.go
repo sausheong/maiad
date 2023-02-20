@@ -33,6 +33,7 @@ func server() {
 }
 
 func generate(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
@@ -41,4 +42,8 @@ func generate(w http.ResponseWriter, r *http.Request) {
 	log.Println(data)
 
 	w.Write([]byte(data))
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
