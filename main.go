@@ -38,16 +38,13 @@ func generate(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		panic(err)
+		log.Printf("Failed to read the body: %v", err)
 	}
 	data := string(body)
-	log.Println(data)
-
-	text, err := talkToOpenAI("tell me more about ", data)
+	text, err := talkToOpenAI("", data)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("Failed to talk to OpenAI: %v", err)
 	}
-
 	w.Write([]byte(text))
 }
 
@@ -63,10 +60,10 @@ func talkToOpenAI(header string, prompt string) (string, error) {
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.CompletionRequest)
 	request.SetUser("sausheong")
-	request.SetModel(openai.TEXT_DAVINCI_002)
+	request.SetModel(openai.TEXT_DAVINCI_003)
 	request.SetPrompt(fmt.Sprintf("%s:%s", header, prompt))
 	request["temperature"] = 0.75
-	request["max_tokens"] = 50
+	request["max_tokens"] = 4000
 
 	cr, err := oaClient.Complete(request)
 	if err != nil {
