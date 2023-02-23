@@ -1,4 +1,4 @@
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/sausheong/openai v0.0.0-20230222154925-381e26bb4b69 h1:g7AWmHflZw0vJTSHoBYZP133Y/+Gnhd1hlgfzIomnR8=
-github.com/sausheong/openai v0.0.0-20230222154925-381e26bb4b69/go.mod h1:t2uRvgCKEBFeSBIyFlnxjs6uNO/MvH0SBIdmPY2SfwA=
+github.com/sausheong/openai v0.0.0-20230223053036-c1a44ff33d87 h1:89ZGb6TnTDlNRQODS7n/5gVxEpneusT6Eu5RSYau7jk=
+github.com/sausheong/openai v0.0.0-20230223053036-c1a44ff33d87/go.mod h1:t2uRvgCKEBFeSBIyFlnxjs6uNO/MvH0SBIdmPY2SfwA=

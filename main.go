@@ -26,7 +26,8 @@ func main() {
 func server() {
 	addr := os.Getenv("PORT")
 	mux := http.NewServeMux()
-	mux.HandleFunc("/g", generate)
+	mux.HandleFunc("/ask", a)
+	mux.HandleFunc("/gen", g)
 	server := &http.Server{
 		Addr:    ":" + addr,
 		Handler: mux,
@@ -34,26 +35,40 @@ func server() {
 	server.ListenAndServe()
 }
 
-func generate(w http.ResponseWriter, r *http.Request) {
+func a(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Failed to read the body: %v", err)
 	}
 	data := string(body)
-	text, err := talkToOpenAI("", data)
+	text, err := ask("", data)
 	if err != nil {
 		log.Printf("Failed to talk to OpenAI: %v", err)
 	}
 	w.Write([]byte(text))
 }
 
+func g(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Printf("Failed to read the body: %v", err)
+	}
+	data := string(body)
+	img, err := generate(data)
+	if err != nil {
+		log.Printf("Failed to talk to OpenAI: %v", err)
+	}
+	w.Write([]byte(img))
+}
+
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-// talk to OpenAI API
-func talkToOpenAI(header string, prompt string) (string, error) {
+// ask OpenAI to generate text
+func ask(header string, prompt string) (string, error) {
 	openAIApiKey := os.Getenv("OPENAI_API_KEY")
 	openAIOrganization := os.Getenv("OPENAI_ORGANIZATION")
 
@@ -70,4 +85,21 @@ func talkToOpenAI(header string, prompt string) (string, error) {
 		log.Println("Completion request failed:", err)
 	}
 	return cr.Text(), err
+}
+
+func generate(prompt string) (string, error) {
+	openAIApiKey := os.Getenv("OPENAI_API_KEY")
+	openAIOrganization := os.Getenv("OPENAI_ORGANIZATION")
+
+	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
+	request := make(openai.ImageRequest)
+	request.SetUser("sausheong")
+	request.SetPrompt(prompt)
+	request.SetFormat("b64_json")
+
+	cr, err := oaClient.GenerateImage(request)
+	if err != nil {
+		log.Println("Completion request failed:", err)
+	}
+	return cr.ImageBase64(), err
 }
