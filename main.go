@@ -96,6 +96,7 @@ func generate(prompt string) (string, error) {
 	request.SetUser("sausheong")
 	request.SetPrompt(prompt)
 	request.SetFormat("b64_json")
+	request.SetSize("512x512")
 
 	cr, err := oaClient.GenerateImage(request)
 	if err != nil {
