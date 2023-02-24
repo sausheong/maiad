@@ -26,6 +26,7 @@ func main() {
 func server() {
 	addr := os.Getenv("PORT")
 	mux := http.NewServeMux()
+	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 	mux.HandleFunc("/ask", a)
 	mux.HandleFunc("/gen", g)
 	server := &http.Server{
