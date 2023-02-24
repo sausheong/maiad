@@ -75,7 +75,6 @@ func ask(header string, prompt string) (string, error) {
 
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.CompletionRequest)
-	request.SetUser("sausheong")
 	request.SetModel(openai.TEXT_DAVINCI_003)
 	request.SetPrompt(fmt.Sprintf("%s:%s", header, prompt))
 	request["temperature"] = 0.75
@@ -94,7 +93,6 @@ func generate(prompt string) (string, error) {
 
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.ImageRequest)
-	request.SetUser("sausheong")
 	request.SetPrompt(prompt)
 	request.SetFormat("b64_json")
 	request.SetSize("512x512")
