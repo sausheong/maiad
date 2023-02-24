@@ -11,19 +11,23 @@ import (
 	"github.com/sausheong/openai"
 )
 
+var env string
+var openAIApiKey string
+var openAIOrganization string
+
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Printf("Failed to load the env vars: %v", err)
+	env = os.Getenv("ENV")
+	if env != "prod" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Printf("Failed to load the env vars: %v", err)
+		}
 	}
+	openAIApiKey = os.Getenv("OPENAI_API_KEY")
+	openAIOrganization = os.Getenv("OPENAI_ORGANIZATION")
 }
 
 func main() {
-
-	server()
-}
-
-func server() {
 	addr := os.Getenv("PORT")
 	mux := http.NewServeMux()
 	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
@@ -36,8 +40,11 @@ func server() {
 	server.ListenAndServe()
 }
 
+// handler for /ask
 func a(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
+	if env != "prod" {
+		enableCors(&w)
+	}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Failed to read the body: %v", err)
@@ -50,8 +57,11 @@ func a(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(text))
 }
 
+// handler for /gen
 func g(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
+	if env != "prod" {
+		enableCors(&w)
+	}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Failed to read the body: %v", err)
@@ -64,15 +74,13 @@ func g(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(img))
 }
 
+// enable CORS for the API
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
 // ask OpenAI to generate text
 func ask(header string, prompt string) (string, error) {
-	openAIApiKey := os.Getenv("OPENAI_API_KEY")
-	openAIOrganization := os.Getenv("OPENAI_ORGANIZATION")
-
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.CompletionRequest)
 	request.SetModel(openai.TEXT_DAVINCI_003)
@@ -87,10 +95,8 @@ func ask(header string, prompt string) (string, error) {
 	return cr.Text(), err
 }
 
+// ask OpenAI to generate an image
 func generate(prompt string) (string, error) {
-	openAIApiKey := os.Getenv("OPENAI_API_KEY")
-	openAIOrganization := os.Getenv("OPENAI_ORGANIZATION")
-
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.ImageRequest)
 	request.SetPrompt(prompt)
