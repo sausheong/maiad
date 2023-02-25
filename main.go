@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -50,7 +49,7 @@ func a(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Failed to read the body: %v", err)
 	}
 	data := string(body)
-	text, err := ask("", data)
+	text, err := ask(data)
 	if err != nil {
 		log.Printf("Failed to talk to OpenAI: %v", err)
 	}
@@ -80,11 +79,11 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 // ask OpenAI to generate text
-func ask(header string, prompt string) (string, error) {
+func ask(prompt string) (string, error) {
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.CompletionRequest)
 	request.SetModel(openai.TEXT_DAVINCI_003)
-	request.SetPrompt(fmt.Sprintf("%s:%s", header, prompt))
+	request.SetPrompt(prompt)
 	request["temperature"] = 0.75
 	request["max_tokens"] = 4000
 
