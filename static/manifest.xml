@@ -8,6 +8,7 @@
   <Description DefaultValue="My AI Assistant."/>
   <IconUrl DefaultValue="https://maia.sausheong.com/static/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://maia.sausheong.com/static/assets/icon-64.png"/>
+  <SupportUrl DefaultValue="https://sausheong.com" />
   <AppDomains>
     <AppDomain>https://sausheong.com</AppDomain>
   </AppDomains>
@@ -61,7 +62,6 @@
         <bt:Image id="Icon.80x80" DefaultValue="https://maia.sausheong.com/static/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
         <bt:Url id="Commands.Url" DefaultValue="https://maia.sausheong.com/static/commands.html"/>
         <bt:Url id="Taskpane.Url" DefaultValue="https://maia.sausheong.com/static/taskpane.html"/>
       </bt:Urls>
@@ -71,7 +71,7 @@
         <bt:String id="TaskpaneButton.Label" DefaultValue="Call Maia"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
+        <bt:String id="GetStarted.Description" DefaultValue="Maia loaded succesfully."/>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to call Maia"/>
       </bt:LongStrings>
     </Resources>
