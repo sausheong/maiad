@@ -82,7 +82,7 @@ func enableCors(w *http.ResponseWriter) {
 func ask(prompt string) (string, error) {
 	oaClient := openai.NewClient(openAIApiKey, openAIOrganization)
 	request := make(openai.CompletionRequest)
-	request.SetModel(openai.TEXT_GPT_35_TURBO)
+	request.SetModel(openai.TEXT_DAVINCI_003)
 	request.SetPrompt(prompt + " {}")
 	request["temperature"] = 0.75
 	request["max_tokens"] = 4096 - len(prompt)
